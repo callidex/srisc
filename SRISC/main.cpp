@@ -10,7 +10,7 @@ int main()
 	const std::string str((std::istreambuf_iterator<char>(t)),
 		std::istreambuf_iterator<char>());
 
-	DemoStackParser p;
+	demo_stack_parser p;
 	p.load_machine_code(str);
 
 
