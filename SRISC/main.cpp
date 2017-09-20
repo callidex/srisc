@@ -2,11 +2,16 @@
 #include "Parser.h"
 #include <fstream>
 
-int main()
+int main(int argc, const char * argv[])
 {
     printf("hello from SRISC!\n");
 
-	std::ifstream t("file.txt", std::ios::binary);
+	if(argc< 1)
+	{
+		printf("point me at a file to parse!\n");
+		return 0;
+	}
+	std::ifstream t(argv[1], std::ios::binary);
 	const std::string str((std::istreambuf_iterator<char>(t)),
 		std::istreambuf_iterator<char>());
 
