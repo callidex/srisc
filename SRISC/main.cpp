@@ -6,7 +6,7 @@ int main(int argc, const char * argv[])
 {
     printf("hello from SRISC!\n");
 
-	if(argc< 1)
+	if(argc<2)
 	{
 		printf("point me at a file to parse!\n");
 		return 0;

@@ -12,6 +12,25 @@ enum instruction_set
 	__DUP = 0x05
 };
 
+// Arbitrary set for overloading
+enum generic_instruction_set
+{	
+	__I0 = 0x10,
+	__I1 = 0x11,
+	__I2 = 0x12,
+	__I3 = 0x13,	
+	__I4 = 0x14,
+	__I5 = 0x15,
+	__I6 = 0x16,
+	__I7 = 0x17,
+	__I8 = 0x18,
+	__I9 = 0x19,
+	__IA = 0x20,
+	__IB = 0x21,	
+	__IC = 0x22,
+};
+
+
 
 stack_parser::stack_parser(): _currentInstruction(0)
 {
@@ -53,9 +72,7 @@ bool stack_parser::parse_next()
 {
 	if (_buffer_pos == _buffer.end()) return false;
 	
-	_currentInstruction = *_buffer_pos;
-	
-	switch(_currentInstruction)
+	switch(*_buffer_pos)
 	{
 		case __LIT:
 			std::cout << "Literal->" << std::endl;
@@ -66,10 +83,8 @@ bool stack_parser::parse_next()
 		case __DUP:
 		{
 			std::cout << "Duplicate->" << std::endl;
-			const unsigned char a = _innerStack.top();
-			_innerStack.push(a);
-			++_buffer_pos;
-			__Dup(a);
+			_innerStack.push(_innerStack.top());		
+			__Dup(_innerStack.top());
 		}
 
 			break;
@@ -103,7 +118,7 @@ bool stack_parser::parse_next()
 			}
 			break;
 		default:
-			std::cout << std::endl << "Unknown instruction " << std::endl;
+			printf("Unknown instruction  %x", *_buffer_pos);
 			break;
 	}
 	++_buffer_pos;
