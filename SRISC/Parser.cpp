@@ -1,4 +1,4 @@
-#include "Parser.h"
+#include "parser.h"
 #include <stack>
 #include <iostream>
 
@@ -8,7 +8,8 @@ enum instruction_set
 	__ADD = 0x01,
 	__DIV = 0x02,
 	__MUL = 0x03,
-	__MIN = 0x04
+	__MIN = 0x04,
+	__DUP = 0x05
 };
 
 
@@ -53,21 +54,30 @@ bool stack_parser::parse_next()
 	if (_buffer_pos == _buffer.end()) return false;
 	
 	_currentInstruction = *_buffer_pos;
-	std::cout << " " << int(_currentInstruction) << " ";
-
-
+	
 	switch(_currentInstruction)
 	{
 		case __LIT:
-			std::cout << "Literal->";
+			std::cout << "Literal->" << std::endl;
 			++_buffer_pos;
 			_innerStack.push(*_buffer_pos);
 			
 		break;
+		case __DUP:
+		{
+			std::cout << "Duplicate->" << std::endl;
+			const unsigned char a = _innerStack.top();
+			_innerStack.push(a);
+			++_buffer_pos;
+			__Dup(a);
+		}
+
+			break;
+
 
 		case __ADD:  // 
 		{
-			std::cout << "Add->";
+			std::cout << "Add->" << std::endl;
 			const unsigned char a = _innerStack.top();
 			_innerStack.pop();
 			const unsigned char b = _innerStack.top();
@@ -77,6 +87,20 @@ bool stack_parser::parse_next()
 			// just for testing, we've already done the work
 			__Add(a, b);
 		}
+			break;
+
+
+		case __MIN:
+			{
+			std::cout << "Minus->" << std::endl;
+			const unsigned char a = _innerStack.top();
+			_innerStack.pop();
+			const unsigned char b = _innerStack.top();
+			_innerStack.pop();
+			const unsigned char c = (b - a);
+			_innerStack.push(c);
+			__Min(a, b);
+			}
 			break;
 		default:
 			std::cout << std::endl << "Unknown instruction " << std::endl;

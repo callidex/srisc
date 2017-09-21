@@ -18,6 +18,7 @@ public:
 	virtual void __Div(unsigned char a, unsigned char b) = 0;
 	virtual void __Mul(unsigned char a, unsigned char b) = 0;
 	virtual void __Min(unsigned char a, unsigned char b) = 0;
+	virtual void __Dup(unsigned char a) = 0;
 
 
 private: 
@@ -57,5 +58,9 @@ public:
 		std::cout << "Min called with " << int(a) << " " << int(b) << std::endl;
 
 	}
-	~demo_stack_parser() {};
+	~demo_stack_parser() {}
+	void __Dup(unsigned char a) override
+	{
+		std::cout << "Dup called with " << int(a) << std::endl;
+	}
 };
